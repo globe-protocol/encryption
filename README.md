@@ -46,7 +46,7 @@ type Data struct {
 	Testvar      int64   `json:"testvar"`
 }
 ```
-Encryption structs:
+Encryption structs (for Encrypting to database storage (MongoDB)):
 
 ```
 type CreateDataParams struct {
@@ -63,6 +63,8 @@ type GetDataParams struct {
 	Testvar      []byte `bson:"testvar"`
 }
 ```
+### Note that the bson tags can also be replaced with `json`
+
 The first struct shows 4 fields where 3 should be encrypted. The first one however which is the id should not be encrypted since in that case you wouldn't be able to find the object back in the database. For this we have the `encrypted` tag where you specify `encrypted:"false"` behind the field that should not be encrypted.
 
 Notice that the Get struct has `[]bytes` wherever the fields are encrypted. Where they are not you can just use the type you used in your original struct.
