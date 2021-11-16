@@ -34,3 +34,23 @@ if err != nil {
   return
 }
 ```
+
+Using the `encrypted` tag and creating structs that are compatible:
+```
+type CreateDataParams struct {
+	Id           string `bson:"_id" encrypted:"false"`
+	Number       string `bson:"number"`
+	Availability string `bson:"availabillity"`
+	Testvar      string `bson:"testvar"`
+}
+
+type GetDataParams struct {
+	Id           string `bson:"_id"` //id
+	Number       []byte `bson:"number"`
+	Availability []byte `bson:"availabillity"`
+	Testvar      []byte `bson:"testvar"`
+}
+```
+The first struct shows 4 fields where 3 should be encrypted. The first one however which is the id should not be encrypted since in that case you wouldn't be able to find the object back in the database. For this we have the `encrypted` tag where you specify `encrypted:"false"` behind the field that should not be encrypted.
+
+Notice that the Get struct has `[]bytes` wherever the fields are encrypted. Where they are not you can just use the type you used in your original struct.
