@@ -1,12 +1,12 @@
 # encryption
 A package that can encrypt &amp; decrypt any given struct with AES256-GCM based on comparing type and string struct
 
-<h2>Initializing a new encryption service:</h2>
+## Initializing a new encryption service:
 `
 encryption := encryption.NewEncryptionService(yourkey in []byte)
 `
 
-<h2>Encrypting a struct for a database example:</h2>
+## Encrypting a struct for a database example:
 ```
 //Returns interface that you can directly store in MongoDB
 encryptedStruct, err := encryption.EncryptToInterface(data)
@@ -16,7 +16,7 @@ if err != nil {
 }
 ```
 
-<h2>Encrypting a struct to further use in your logic:</h2>
+## Encrypting a struct to further use in your logic:
 ```
 //Returns json bytes
 encryptedBytes, err := encryption.EncryptToJSON(testData)
@@ -35,7 +35,7 @@ if err != nil {
 }
 ```
 
-<h2>Using the `encrypted` tag and creating structs that are compatible:</h2>
+## Using the `encrypted` tag and creating structs that are compatible:
 
 First the original struct that we will use to create the encryption structs:
 ```
