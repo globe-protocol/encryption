@@ -94,7 +94,7 @@ func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
 		}
 
 		if len(fieldName) == 0 {
-			return nil, fmt.Errorf("the provided struct does not have either the bson or ename tag, this is necessary for creating return map")
+			return nil, fmt.Errorf("the provided struct does not have either the json or bson tag, this is necessary for creating return map")
 		}
 		encrypt := object.Type().Field(i).Tag.Get("encrypted")
 
@@ -108,6 +108,7 @@ func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
 
 	}
 
+	fmt.Println("Package: ", returnObj)
 	jsonBytes, err := json.Marshal(returnObj)
 	if err != nil {
 		return nil, errors.New("could not convert interface to json")
