@@ -28,7 +28,7 @@ if err != nil {
 //The fields of the struct that are encrypted should be of []byte type
 encryptedStruct := encT{}
 
-err = json.Unmarshal(test, &encryptedStruct)
+err = json.Unmarshal(encryptedBytes, &encryptedStruct)
 if err != nil {
   fmt.Println(err)
   return
