@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -20,7 +21,7 @@ func NewEncryptionService(key []byte) EncryptionService {
 	}
 }
 
-func (e *encryptionService) Encrypt(eData interface{}) (map[string]interface{}, error) {
+func (e *encryptionService) EncryptToInterface(eData interface{}) (map[string]interface{}, error) {
 	object := reflect.ValueOf(eData)
 	returnObj := map[string]interface{}{}
 
@@ -63,6 +64,56 @@ func (e *encryptionService) Encrypt(eData interface{}) (map[string]interface{}, 
 	}
 
 	return returnObj, nil
+}
+
+func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
+	object := reflect.ValueOf(eData)
+	returnObj := map[string]interface{}{}
+
+	block, err := aes.NewCipher(e.key)
+	if err != nil {
+		return nil, err
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+
+	nonce := make([]byte, aesGCM.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		panic(err.Error())
+	}
+
+	for i := 0; i < object.NumField(); i++ {
+		var fieldName string
+
+		fieldName = object.Type().Field(i).Tag.Get("bson")
+		if fieldName == "" || len(fieldName) == 0 {
+			fieldName = object.Type().Field(i).Tag.Get("ename")
+		}
+
+		if len(fieldName) == 0 {
+			return nil, fmt.Errorf("the provided struct does not have either the bson or ename tag, this is necessary for creating return map")
+		}
+		encrypt := object.Type().Field(i).Tag.Get("encrypted")
+
+		if encrypt != "false" {
+			val := aesGCM.Seal(nonce, nonce, []byte(fmt.Sprint(object.Field(i))), nil)
+			returnObj[fieldName] = val
+		} else {
+			val := fmt.Sprint(object.Field(i))
+			returnObj[fieldName] = val
+		}
+
+	}
+
+	jsonBytes, err := json.Marshal(returnObj)
+	if err != nil {
+		return nil, errors.New("could not convert interface to json")
+	}
+
+	return jsonBytes, nil
 }
 
 func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput interface{}) (interface{}, error) {

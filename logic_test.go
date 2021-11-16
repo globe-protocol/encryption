@@ -46,7 +46,7 @@ func Test_Encrypt_and_Decrypt(t *testing.T) {
 				key: []byte{176, 55, 108, 116, 181, 15, 21, 190, 134, 27, 183, 18, 48, 179, 221, 123, 225, 172, 55, 54, 142, 158, 173, 59, 77, 239, 116, 99, 248, 15, 228, 254},
 			}
 
-			encryptedData, err := e.Encrypt(tt.args.data)
+			encryptedData, err := e.EncryptToInterface(tt.args.data)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("encryptionService.Encrypt() error = %v, wantErr %v", err, tt.wantErr)
 				return
