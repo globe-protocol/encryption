@@ -34,13 +34,22 @@ func (e *encryptionService) Encrypt(eData interface{}) (map[string]interface{}, 
 		return nil, err
 	}
 
+	nonce := make([]byte, aesGCM.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		panic(err.Error())
+	}
+
 	for i := 0; i < object.NumField(); i++ {
-		nonce := make([]byte, aesGCM.NonceSize())
-		if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-			return nil, err
+		var fieldName string
+
+		fieldName = object.Type().Field(i).Tag.Get("bson")
+		if fieldName == "" || len(fieldName) == 0 {
+			fieldName = object.Type().Field(i).Tag.Get("ename")
 		}
 
-		fieldName := object.Type().Field(i).Tag.Get("bson")
+		if len(fieldName) == 0 {
+			return nil, fmt.Errorf("the provided struct does not have either the bson or ename tag, this is necessary for creating return map")
+		}
 		encrypt := object.Type().Field(i).Tag.Get("encrypted")
 
 		if encrypt != "false" {
