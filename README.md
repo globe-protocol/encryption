@@ -7,7 +7,7 @@ encryption := encryption.NewEncryptionService(yourkey in []byte)
 `
 
 ## Encrypting a struct for a database example:
-```
+```go
 //Returns interface that you can directly store in MongoDB
 encryptedStruct, err := encryption.EncryptToInterface(data)
 if err != nil {
@@ -17,7 +17,7 @@ if err != nil {
 ```
 
 ## Encrypting a struct to further use in your logic:
-```
+```go
 //Returns json bytes
 encryptedBytes, err := encryption.EncryptToJSON(testData)
 if err != nil {
@@ -38,7 +38,7 @@ if err != nil {
 ## Using the `encrypted` tag and creating structs that are compatible:
 
 First the original struct that we will use to create the encryption structs:
-```
+```go
 type Data struct {
 	Id           string  `json:"_id"
 	Number       float64 `json:"number"`
@@ -48,7 +48,7 @@ type Data struct {
 ```
 Encryption structs (for Encrypting to database storage (MongoDB)):
 
-```
+```go
 type CreateDataParams struct {
 	Id           string `bson:"_id" encrypted:"false"`
 	Number       string `bson:"number"`
