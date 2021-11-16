@@ -90,7 +90,7 @@ func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
 
 		fieldName = object.Type().Field(i).Tag.Get("bson")
 		if fieldName == "" || len(fieldName) == 0 {
-			fieldName = object.Type().Field(i).Tag.Get("ename")
+			fieldName = object.Type().Field(i).Tag.Get("json")
 		}
 
 		if len(fieldName) == 0 {
