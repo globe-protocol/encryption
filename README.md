@@ -36,6 +36,18 @@ if err != nil {
 ```
 
 Using the `encrypted` tag and creating structs that are compatible:
+
+First the original struct that we will use to create the encryption structs:
+```
+type Data struct {
+	Id           string  `json:"_id"
+	Number       float64 `json:"number"`
+	Availability bool    `json:"availabillity"`
+	Testvar      int64   `json:"testvar"`
+}
+```
+Encryption structs:
+
 ```
 type CreateDataParams struct {
 	Id           string `bson:"_id" encrypted:"false"`
