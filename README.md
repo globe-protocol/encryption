@@ -7,17 +7,17 @@ encryption := encryption.NewEncryptionService(yourkey in []byte)
 `
 
 Encrypting a struct for a database example:
-`
+```
 //Returns interface that you can directly store in MongoDB
 encryptedStruct, err := encryption.EncryptToInterface(data)
 if err != nil {
   //Handle error
   fmt.Println(err)
 }
-`
+```
 
 Encrypting a struct to further use in your logic:
-`
+```
 //Returns json bytes
 encryptedBytes, err := encryption.EncryptToJSON(testData)
 if err != nil {
@@ -33,4 +33,4 @@ if err != nil {
   fmt.Println(err)
   return
 }
-`
+```
