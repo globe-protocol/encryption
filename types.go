@@ -62,7 +62,7 @@ func Convert(s string, t reflect.Value) (interface{}, error) {
 			}
 			ival, err := strconv.ParseUint(val, 10, 8)
 			if err != nil {
-				return nil, fmt.Errorf("could not convert %s to string while structuring byte array", string(v))
+				return nil, fmt.Errorf("could not convert %s to string while structuring byte array", string(b))
 			}
 
 			b = append(b, uint8(ival))
