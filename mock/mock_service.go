@@ -48,17 +48,62 @@ func (mr *MockEncryptionServiceMockRecorder) Decrypt(eData, eData2 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Decrypt", reflect.TypeOf((*MockEncryptionService)(nil).Decrypt), eData, eData2)
 }
 
-// Encrypt mocks base method.
-func (m *MockEncryptionService) Encrypt(eData interface{}) (map[string]interface{}, error) {
+// DecryptStr mocks base method.
+func (m *MockEncryptionService) DecryptStr(str string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Encrypt", eData)
+	ret := m.ctrl.Call(m, "DecryptStr", str)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecryptStr indicates an expected call of DecryptStr.
+func (mr *MockEncryptionServiceMockRecorder) DecryptStr(str interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecryptStr", reflect.TypeOf((*MockEncryptionService)(nil).DecryptStr), str)
+}
+
+// EncryptStr mocks base method.
+func (m *MockEncryptionService) EncryptStr(str string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EncryptStr", str)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// EncryptStr indicates an expected call of EncryptStr.
+func (mr *MockEncryptionServiceMockRecorder) EncryptStr(str interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncryptStr", reflect.TypeOf((*MockEncryptionService)(nil).EncryptStr), str)
+}
+
+// EncryptToInterface mocks base method.
+func (m *MockEncryptionService) EncryptToInterface(eData interface{}) (map[string]interface{}, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EncryptToInterface", eData)
 	ret0, _ := ret[0].(map[string]interface{})
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Encrypt indicates an expected call of Encrypt.
-func (mr *MockEncryptionServiceMockRecorder) Encrypt(eData interface{}) *gomock.Call {
+// EncryptToInterface indicates an expected call of EncryptToInterface.
+func (mr *MockEncryptionServiceMockRecorder) EncryptToInterface(eData interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Encrypt", reflect.TypeOf((*MockEncryptionService)(nil).Encrypt), eData)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncryptToInterface", reflect.TypeOf((*MockEncryptionService)(nil).EncryptToInterface), eData)
+}
+
+// EncryptToJSON mocks base method.
+func (m *MockEncryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EncryptToJSON", eData)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// EncryptToJSON indicates an expected call of EncryptToJSON.
+func (mr *MockEncryptionServiceMockRecorder) EncryptToJSON(eData interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncryptToJSON", reflect.TypeOf((*MockEncryptionService)(nil).EncryptToJSON), eData)
 }

@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"reflect"
@@ -21,18 +20,39 @@ func NewEncryptionService(key []byte) EncryptionService {
 	}
 }
 
+func (e *encryptionService) EncryptStr(str string) (string, error) {
+	block, err := aes.NewCipher(e.key)
+	if err != nil {
+		return "", err
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	nonce := make([]byte, aesGCM.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		panic(err.Error())
+	}
+
+	val := aesGCM.Seal(nonce, nonce, []byte(str), nil)
+
+	return string(val), nil
+}
+
 func (e *encryptionService) EncryptToInterface(eData interface{}) (map[string]interface{}, error) {
 	object := reflect.ValueOf(eData)
 	returnObj := map[string]interface{}{}
 
 	block, err := aes.NewCipher(e.key)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create cipher, external aes package returned the following error: %s", err)
 	}
 
 	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create GCM, external cipher package returned the following error: %s", err)
 	}
 
 	nonce := make([]byte, aesGCM.NonceSize())
@@ -108,10 +128,9 @@ func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
 
 	}
 
-	fmt.Println("Package: ", returnObj)
 	jsonBytes, err := json.Marshal(returnObj)
 	if err != nil {
-		return nil, errors.New("could not convert interface to json")
+		return nil, fmt.Errorf("failed to convert to json, external json package returned the following error: %s", err)
 	}
 
 	return jsonBytes, nil
@@ -123,12 +142,12 @@ func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput int
 
 	block, err := aes.NewCipher(e.key)
 	if err != nil {
-		return nil, errors.New("failed to create cipher")
+		return nil, fmt.Errorf("failed to create cipher, external aes package returned the following error: %s", err)
 	}
 
 	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, errors.New("failed to create GCM")
+		return nil, fmt.Errorf("failed to create GCM, external cipher package returned the following error: %s", err)
 	}
 
 	for i := 0; i < object.NumField(); i++ {
@@ -138,7 +157,7 @@ func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput int
 		if encrypted != "false" {
 			decryptedStr, err = e.getPlainText(object.Field(i).Bytes(), aesGCM)
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("failed to get text out of encrypted value, the following error occured: %s", err)
 			}
 		} else {
 			decryptedStr = object.Field(i).String()
@@ -156,6 +175,26 @@ func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput int
 	}
 
 	return returnObj.Interface(), nil
+}
+
+func (e *encryptionService) DecryptStr(str string) (string, error) {
+
+	block, err := aes.NewCipher(e.key)
+	if err != nil {
+		return "", fmt.Errorf("failed to create cipher, external aes package returned the following error: %s", err)
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", fmt.Errorf("failed to create GCM, external cipher package returned the following error: %s", err)
+	}
+
+	decryptedStr, err := e.getPlainText([]byte(str), aesGCM)
+	if err != nil {
+		return "", fmt.Errorf("failed to decrypt string, the following error occured: %s", err)
+	}
+
+	return decryptedStr, nil
 }
 
 func (e encryptionService) getPlainText(val []byte, aesGCM cipher.AEAD) (string, error) {
