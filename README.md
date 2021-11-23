@@ -68,3 +68,14 @@ type GetDataParams struct {
 The first struct shows 4 fields where 3 should be encrypted. The first one however which is the id should not be encrypted since in that case you wouldn't be able to find the object back in the database. For this we have the `encrypted` tag where you specify `encrypted:"false"` behind the field that should not be encrypted.
 
 Notice that the Get struct has `[]bytes` wherever the fields are encrypted. Where they are not you can just use the type you used in your original struct.
+
+
+## Encrypting and Decrypting a single string:
+
+```go
+encryptedStr, err := encryption.EncryptStr("string input")
+
+decryptedStr, err := encryption.DecryptStr(encryptedStr)
+```
+The output of the EncryptStr function is just a regular string however it is now encrypted.
+This encrypted string can now be used to pass to the DecrypStr function which will decrypt it back to its original state.
