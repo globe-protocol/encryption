@@ -1,4 +1,4 @@
-package AES
+package encryption
 
 import (
 	"reflect"
