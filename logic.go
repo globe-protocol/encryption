@@ -208,3 +208,55 @@ func (e encryptionService) getPlainText(val []byte, aesGCM cipher.AEAD) (string,
 
 	return fmt.Sprintf("%s", plaintext), nil
 }
+
+func (e *encryptionService) EncryptBytes(b []byte) ([]byte, error) {
+	block, err := aes.NewCipher(e.key)
+	if err != nil {
+		return nil, err
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+
+	nonce := make([]byte, aesGCM.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		panic(err.Error())
+	}
+
+	val := aesGCM.Seal(nonce, nonce, b, nil)
+
+	return val, nil
+}
+
+func (e *encryptionService) DecryptBytes(b []byte) ([]byte, error) {
+	block, err := aes.NewCipher(e.key)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cipher, external aes package returned the following error: %s", err)
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create GCM, external cipher package returned the following error: %s", err)
+	}
+
+	decryptedBytes, err := e.getPlainBytes(b, aesGCM)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decrypt string, the following error occured: %s", err)
+	}
+
+	return decryptedBytes, nil
+}
+
+func (e encryptionService) getPlainBytes(val []byte, aesGCM cipher.AEAD) ([]byte, error) {
+	nonceSize := aesGCM.NonceSize()
+
+	nonce, ciphertext := val[:nonceSize], val[nonceSize:]
+	plainbytes, err := aesGCM.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return plainbytes, nil
+}

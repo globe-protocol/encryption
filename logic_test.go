@@ -89,7 +89,7 @@ func Test_encryptionService_EncryptStr(t *testing.T) {
 		{
 			name: "successfully encrypt & decrypt string input",
 			args: args{
-				str: "test input",
+				str: "test inputf5t67yyyyu857tfo",
 			},
 			wantErr: false,
 		},
@@ -106,6 +106,7 @@ func Test_encryptionService_EncryptStr(t *testing.T) {
 				return
 			}
 
+			fmt.Println(encrypted)
 			got, err := e.DecryptStr(encrypted)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("encryptionService.EncryptStr() error = %v, wantErr %v", err, tt.wantErr)
@@ -114,6 +115,55 @@ func Test_encryptionService_EncryptStr(t *testing.T) {
 
 			if got != tt.args.str {
 				t.Errorf("encryptionService.EncryptStr() = %v, want %v", got, tt.args.str)
+			}
+		})
+	}
+}
+
+func Test_encryptionService_EncryptBytes(t *testing.T) {
+	type args struct {
+		b []byte
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "successfully encrypt & decrypt string input",
+			args: args{
+				b: []byte{12, 21, 21, 45, 52},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			e := encryptionService{
+				key: []byte{176, 55, 108, 116, 181, 15, 21, 190, 134, 27, 183, 18, 48, 179, 221, 123, 225, 172, 55, 54, 142, 158, 173, 59, 77, 239, 116, 99, 248, 15, 228, 254},
+			}
+
+			encrypted, err := e.EncryptBytes(tt.args.b)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("encryptionService.EncryptStr() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			got, err := e.DecryptBytes(encrypted)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("encryptionService.EncryptStr() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if len(got) != len(tt.args.b) {
+				fmt.Println(len(got), len(tt.args.b))
+				t.Errorf("encryptionService.EncryptStr() = %v, want %v", got, tt.args.b)
+			}
+
+			for i := 0; i < len(got); i++ {
+				if got[i] != tt.args.b[i] {
+					t.Errorf("encryptionService.EncryptStr() = %v, want %v", got, tt.args.b)
+				}
 			}
 		})
 	}
