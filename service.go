@@ -6,6 +6,9 @@ type EncryptionService interface {
 	EncryptToJSON(eData interface{}) ([]byte, error)
 	Decrypt(eData interface{}, eData2 interface{}) (interface{}, error)
 
-	EncryptStr(str string) (string, error)
-	DecryptStr(str string) (string, error)
+	EncryptStr(str string) ([]byte, error)
+	DecryptStr(b []byte) (string, error)
+
+	EncryptByt(b []byte) ([]byte, error)
+	DecryptByt(b []byte) ([]byte, error)
 }

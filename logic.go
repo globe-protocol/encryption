@@ -20,15 +20,15 @@ func NewEncryptionService(key []byte) EncryptionService {
 	}
 }
 
-func (e *encryptionService) EncryptStr(str string) (string, error) {
+func (e *encryptionService) EncryptStr(str string) ([]byte, error) {
 	block, err := aes.NewCipher(e.key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	nonce := make([]byte, aesGCM.NonceSize())
@@ -38,7 +38,7 @@ func (e *encryptionService) EncryptStr(str string) (string, error) {
 
 	val := aesGCM.Seal(nonce, nonce, []byte(str), nil)
 
-	return string(val), nil
+	return val, nil
 }
 
 func (e *encryptionService) EncryptToInterface(eData interface{}) (map[string]interface{}, error) {
@@ -177,7 +177,7 @@ func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput int
 	return returnObj.Interface(), nil
 }
 
-func (e *encryptionService) DecryptStr(str string) (string, error) {
+func (e *encryptionService) DecryptStr(b []byte) (string, error) {
 
 	block, err := aes.NewCipher(e.key)
 	if err != nil {
@@ -189,7 +189,7 @@ func (e *encryptionService) DecryptStr(str string) (string, error) {
 		return "", fmt.Errorf("failed to create GCM, external cipher package returned the following error: %s", err)
 	}
 
-	decryptedStr, err := e.getPlainText([]byte(str), aesGCM)
+	decryptedStr, err := e.getPlainText(b, aesGCM)
 	if err != nil {
 		return "", fmt.Errorf("failed to decrypt string, the following error occured: %s", err)
 	}
@@ -209,7 +209,7 @@ func (e encryptionService) getPlainText(val []byte, aesGCM cipher.AEAD) (string,
 	return fmt.Sprintf("%s", plaintext), nil
 }
 
-func (e *encryptionService) EncryptBytes(b []byte) ([]byte, error) {
+func (e *encryptionService) EncryptByt(b []byte) ([]byte, error) {
 	block, err := aes.NewCipher(e.key)
 	if err != nil {
 		return nil, err
@@ -230,7 +230,7 @@ func (e *encryptionService) EncryptBytes(b []byte) ([]byte, error) {
 	return val, nil
 }
 
-func (e *encryptionService) DecryptBytes(b []byte) ([]byte, error) {
+func (e *encryptionService) DecryptByt(b []byte) ([]byte, error) {
 	block, err := aes.NewCipher(e.key)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cipher, external aes package returned the following error: %s", err)

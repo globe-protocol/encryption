@@ -143,13 +143,13 @@ func Test_encryptionService_EncryptBytes(t *testing.T) {
 				key: []byte{176, 55, 108, 116, 181, 15, 21, 190, 134, 27, 183, 18, 48, 179, 221, 123, 225, 172, 55, 54, 142, 158, 173, 59, 77, 239, 116, 99, 248, 15, 228, 254},
 			}
 
-			encrypted, err := e.EncryptBytes(tt.args.b)
+			encrypted, err := e.EncryptByt(tt.args.b)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("encryptionService.EncryptStr() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
-			got, err := e.DecryptBytes(encrypted)
+			got, err := e.DecryptByt(encrypted)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("encryptionService.EncryptStr() error = %v, wantErr %v", err, tt.wantErr)
 				return
