@@ -56,7 +56,8 @@ The function allows users to create a new instance of the encryption service usi
 #### Example
 
 ```go
-encryptionService := aes256.NewEncryptionService([]byte("/f532*15=5j145/245n*qw21n9q146/-")) //Requires 32-bit key input
+//Requires 32-bit key input
+encryptionService := aes256.NewEncryptionService([]byte("/f532*15=5j145/245n*qw21n9q146/-"))
 ```
 
 We call the NewEncryption function using a 32-bit long string converted to []byte as encryption key input. This will return a new encryption service implementing all the logic functions of the package.
@@ -86,12 +87,14 @@ Following up the string encryption function this function takes a byte array. Wh
 We'll use the above created encryptionService to show further examples.
 
 ```go
-encryptedBytes, err := encryptionService.EncryptStr("example string") //Output will be long encrypted byte array representing string
+//Output will be long encrypted byte array representing string
+encryptedBytes, err := encryptionService.EncryptStr("example string")
 if err != nil {
     fmt.Println(err) //Handle error in desired way
 }
 
-decryptedString, err := encryptionService.DecryptStr(encryptedBytes) //Output will "example string" just as the input of the encrypt func
+//Output will "example string" just as the input of the encrypt func
+decryptedString, err := encryptionService.DecryptStr(encryptedBytes)
 if err != nil {
     fmt.Println(err) //Handle error in desired way
 }
@@ -122,12 +125,14 @@ Following up the byte encryption function this function takes a byte array. When
 We'll use the above created encryptionService to show further examples.
 
 ```go
-encryptedBytes, err := encryptionService.EncryptByt([]byte("example string") //Notice that string is converted to []byte
+//Notice that string is converted to []byte
+encryptedBytes, err := encryptionService.EncryptByt([]byte("example string")
 if err != nil {
     fmt.Println(err) //Handle error in desired way
 }
 
-decryptedBytes, err := encryptionService.DecryptByt(encryptedBytes) //Output will represent "example string" in []byte
+//Output will represent "example string" in []byte
+decryptedBytes, err := encryptionService.DecryptByt(encryptedBytes)
 if err != nil {
     fmt.Println(err) //Handle error in desired way
 }
@@ -254,7 +259,8 @@ type CreateDataParams struct {
 
 //This struct is used to get the encrypted data from the database
 type GetDataParams struct {
-    Id           string `bson:"_id"` 	//Notice that the field kept its type since it is not encrypted all other fields are []byte
+    //Notice that the field kept its type since it is not encrypted all other fields are []byte
+    Id           string `bson:"_id"` 	
 	Number       []byte `bson:"number"`
 	Availability []byte `bson:"availabillity"`
 	Testvar      []byte `bson:"testvar"`
