@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+//Define all types as enum
 const (
 	Int8    = "int8"
 	Uint8   = "uint8"
@@ -26,6 +27,7 @@ const (
 	Bool    = "bool"
 )
 
+//Convert string value to desired type
 func Convert(s string, t reflect.Value) (interface{}, error) {
 	switch t.Type().String() {
 	case Int8:
