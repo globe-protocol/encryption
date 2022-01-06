@@ -62,14 +62,15 @@ func (e *encryptionService) EncryptToInterface(eData interface{}) (map[string]in
 		return nil, fmt.Errorf("failed to create GCM, external cipher package returned the following error: %s", err)
 	}
 
-	//Create random nonce so that the same input value changes when it is encrypted
-	nonce := make([]byte, aesGCM.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		panic(err.Error())
-	}
-
 	//For each field in object
 	for i := 0; i < object.NumField(); i++ {
+
+		//Create random nonce so that the same input value changes when it is encrypted
+		nonce := make([]byte, aesGCM.NonceSize())
+		if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+			panic(err.Error())
+		}
+
 		var fieldName string
 
 		//Get field name by reading bson tag
@@ -118,14 +119,15 @@ func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
 		return nil, err
 	}
 
-	//Create random nonce so that the same input value changes when it is encrypted
-	nonce := make([]byte, aesGCM.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		panic(err.Error())
-	}
-
 	//For each field in object
 	for i := 0; i < object.NumField(); i++ {
+
+		//Create random nonce so that the same input value changes when it is encrypted
+		nonce := make([]byte, aesGCM.NonceSize())
+		if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+			panic(err.Error())
+		}
+
 		var fieldName string
 
 		//Get bson tag
