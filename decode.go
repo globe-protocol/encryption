@@ -207,7 +207,7 @@ func Decode(s string, t reflect.Value) (interface{}, error) {
 		return s, nil
 
 	case StringArr:
-		return strings.Split(s, " "), nil
+		return strings.Split(s, "°"), nil
 
 	case Bool:
 		var b bool
