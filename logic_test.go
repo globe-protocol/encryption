@@ -82,7 +82,7 @@ func Test_Encrypt_and_Decrypt(t *testing.T) {
 				t.Errorf("error casting interface to desired type")
 			}
 
-			if reflect.DeepEqual(*decryptedObj, tt.args.data) {
+			if reflect.DeepEqual(decryptedObj, tt.args.data) {
 				t.Errorf("decrypted body = %+v\n want = %+v\n", decryptedObj, tt.args.data)
 			}
 		})
@@ -118,7 +118,6 @@ func Test_encryptionService_EncryptStr(t *testing.T) {
 				return
 			}
 
-			fmt.Println(encrypted)
 			got, err := e.DecryptStr(encrypted)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("encryptionService.EncryptStr() error = %v, wantErr %v", err, tt.wantErr)
@@ -168,7 +167,6 @@ func Test_encryptionService_EncryptBytes(t *testing.T) {
 			}
 
 			if len(got) != len(tt.args.b) {
-				fmt.Println(len(got), len(tt.args.b))
 				t.Errorf("encryptionService.EncryptStr() = %v, want %v", got, tt.args.b)
 			}
 

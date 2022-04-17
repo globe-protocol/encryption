@@ -14,7 +14,6 @@ const (
 func Encode(value reflect.Value) string {
 	switch value.Type().String() {
 	case StringArr:
-		fmt.Println(strings.Join(value.Interface().([]string), "°"))
 		return strings.Join(value.Interface().([]string), "°")
 	default:
 		return fmt.Sprint(value)
