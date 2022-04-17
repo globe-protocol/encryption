@@ -7,15 +7,17 @@ import (
 )
 
 type stringfloatbool struct {
-	String  string  `bson:"String" encrypted:"false"`
-	Float64 float64 `bson:"Float64"`
-	Bool    bool    `bson:"Bool"`
+	String    string   `bson:"String" encrypted:"false"`
+	Float64   float64  `bson:"Float64"`
+	Bool      bool     `bson:"Bool"`
+	StringArr []string `bson:"StringArr"`
 }
 
 type stringfloatboolEnc struct {
-	String  string `bson:"String" encrypted:"false"`
-	Float64 []byte `bson:"Float64"`
-	Bool    []byte `bson:"Bool"`
+	String    string `bson:"String" encrypted:"false"`
+	Float64   []byte `bson:"Float64"`
+	Bool      []byte `bson:"Bool"`
+	StringArr []byte `bson:"StringArr"`
 }
 
 func Test_Encrypt_and_Decrypt(t *testing.T) {
@@ -39,6 +41,15 @@ func Test_Encrypt_and_Decrypt(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "Successful data upload (string[])",
+			args: args{
+				data: stringfloatbool{
+					StringArr: []string{"test value", "test, value 2"},
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -53,9 +64,10 @@ func Test_Encrypt_and_Decrypt(t *testing.T) {
 			}
 
 			encryptedObj := stringfloatboolEnc{
-				String:  fmt.Sprint(encryptedData["String"]),
-				Float64: encryptedData["Float64"].([]byte),
-				Bool:    encryptedData["Bool"].([]byte),
+				String:    fmt.Sprint(encryptedData["String"]),
+				Float64:   encryptedData["Float64"].([]byte),
+				Bool:      encryptedData["Bool"].([]byte),
+				StringArr: encryptedData["StringArr"].([]byte),
 			}
 
 			var desiredType stringfloatbool
@@ -70,7 +82,7 @@ func Test_Encrypt_and_Decrypt(t *testing.T) {
 				t.Errorf("error casting interface to desired type")
 			}
 
-			if *decryptedObj != tt.args.data {
+			if reflect.DeepEqual(*decryptedObj, tt.args.data) {
 				t.Errorf("decrypted body = %+v\n want = %+v\n", decryptedObj, tt.args.data)
 			}
 		})

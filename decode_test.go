@@ -163,7 +163,7 @@ func TestConvert(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Convert(tt.args.s, tt.args.t)
+			got, err := Decode(tt.args.s, tt.args.t)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Convert() error = %v, wantErr %v", err, tt.wantErr)
 				return

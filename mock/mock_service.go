@@ -48,26 +48,56 @@ func (mr *MockEncryptionServiceMockRecorder) Decrypt(eData, eData2 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Decrypt", reflect.TypeOf((*MockEncryptionService)(nil).Decrypt), eData, eData2)
 }
 
-// DecryptStr mocks base method.
-func (m *MockEncryptionService) DecryptStr(str string) (string, error) {
+// DecryptByt mocks base method.
+func (m *MockEncryptionService) DecryptByt(b []byte) ([]byte, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DecryptStr", str)
+	ret := m.ctrl.Call(m, "DecryptByt", b)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecryptByt indicates an expected call of DecryptByt.
+func (mr *MockEncryptionServiceMockRecorder) DecryptByt(b interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecryptByt", reflect.TypeOf((*MockEncryptionService)(nil).DecryptByt), b)
+}
+
+// DecryptStr mocks base method.
+func (m *MockEncryptionService) DecryptStr(b []byte) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecryptStr", b)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // DecryptStr indicates an expected call of DecryptStr.
-func (mr *MockEncryptionServiceMockRecorder) DecryptStr(str interface{}) *gomock.Call {
+func (mr *MockEncryptionServiceMockRecorder) DecryptStr(b interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecryptStr", reflect.TypeOf((*MockEncryptionService)(nil).DecryptStr), str)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecryptStr", reflect.TypeOf((*MockEncryptionService)(nil).DecryptStr), b)
+}
+
+// EncryptByt mocks base method.
+func (m *MockEncryptionService) EncryptByt(b []byte) ([]byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EncryptByt", b)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// EncryptByt indicates an expected call of EncryptByt.
+func (mr *MockEncryptionServiceMockRecorder) EncryptByt(b interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncryptByt", reflect.TypeOf((*MockEncryptionService)(nil).EncryptByt), b)
 }
 
 // EncryptStr mocks base method.
-func (m *MockEncryptionService) EncryptStr(str string) (string, error) {
+func (m *MockEncryptionService) EncryptStr(str string) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "EncryptStr", str)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

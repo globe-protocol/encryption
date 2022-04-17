@@ -101,7 +101,7 @@ func (e *encryptionService) EncryptToInterface(eData interface{}) (map[string]in
 		encrypt := object.Type().Field(i).Tag.Get("encrypted")
 		//If encrypted == false don't encrypt otherwise encrypt
 		if encrypt != "false" {
-			val, err := e.sealWithNonce(aesGCM, fmt.Sprint(object.Field(i)))
+			val, err := e.sealWithNonce(aesGCM, Encode(object.Field(i)))
 			if err != nil {
 				return nil, err
 			}
@@ -138,7 +138,7 @@ func (e *encryptionService) EncryptToJSON(eData interface{}) ([]byte, error) {
 		encrypt := object.Type().Field(i).Tag.Get("encrypted")
 
 		if encrypt != "false" {
-			val, err := e.sealWithNonce(aesGCM, fmt.Sprint(object.Field(i)))
+			val, err := e.sealWithNonce(aesGCM, Encode(object.Field(i)))
 			if err != nil {
 				return nil, err
 			}
@@ -188,7 +188,7 @@ func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput int
 		//Convert string to desired type
 		field := reflect.Indirect(returnObj).Field(i)
 		if field.IsValid() {
-			val, err := Convert(decryptedStr, field)
+			val, err := Decode(decryptedStr, field)
 			if err != nil {
 				return nil, err
 			}

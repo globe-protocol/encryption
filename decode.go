@@ -9,28 +9,27 @@ import (
 
 //Define all types as enum
 const (
-	Int8      = "int8"
-	Uint8     = "uint8"
-	Byte      = "[]uint8"
-	Int16     = "int16"
-	Uint16    = "uint16"
-	Int32     = "int32"
-	Rune      = "rune"
-	Uint32    = "uint32"
-	Int64     = "int64"
-	Uint64    = "uint64"
-	Int       = "int"
-	Uint      = "uint"
-	Uintptr   = "uintptr"
-	Float32   = "float32"
-	Float64   = "float64"
-	String    = "string"
-	StringArr = "[]string"
-	Bool      = "bool"
+	Int8    = "int8"
+	Uint8   = "uint8"
+	Byte    = "[]uint8"
+	Int16   = "int16"
+	Uint16  = "uint16"
+	Int32   = "int32"
+	Rune    = "rune"
+	Uint32  = "uint32"
+	Int64   = "int64"
+	Uint64  = "uint64"
+	Int     = "int"
+	Uint    = "uint"
+	Uintptr = "uintptr"
+	Float32 = "float32"
+	Float64 = "float64"
+	String  = "string"
+	Bool    = "bool"
 )
 
-//Convert string value to desired type
-func Convert(s string, t reflect.Value) (interface{}, error) {
+//Decode string value to desired type
+func Decode(s string, t reflect.Value) (interface{}, error) {
 	switch t.Type().String() {
 	case Int8:
 		var i int8
