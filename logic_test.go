@@ -11,6 +11,7 @@ type stringfloatbool struct {
 	Float64   float64  `bson:"Float64"`
 	Bool      bool     `bson:"Bool"`
 	StringArr []string `bson:"StringArr"`
+	EmptyVal  string   `bson:"EmptyVal"`
 }
 
 type stringfloatboolEnc struct {
@@ -18,6 +19,7 @@ type stringfloatboolEnc struct {
 	Float64   []byte `bson:"Float64"`
 	Bool      []byte `bson:"Bool"`
 	StringArr []byte `bson:"StringArr"`
+	EmptyVal  []byte `bson:"EmptyVal"`
 }
 
 func Test_Encrypt_and_Decrypt(t *testing.T) {
@@ -68,6 +70,7 @@ func Test_Encrypt_and_Decrypt(t *testing.T) {
 				Float64:   encryptedData["Float64"].([]byte),
 				Bool:      encryptedData["Bool"].([]byte),
 				StringArr: encryptedData["StringArr"].([]byte),
+				EmptyVal:  nil,
 			}
 
 			var desiredType stringfloatbool

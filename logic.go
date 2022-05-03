@@ -175,8 +175,8 @@ func (e *encryptionService) Decrypt(encryptedData interface{}, desiredOutput int
 		encrypted := reflect.Indirect(returnObj).Type().Field(i).Tag.Get("encrypted")
 
 		var decryptedStr string
-		//If encrypted == false don't encrypt otherwise encrypt
-		if encrypted != "false" {
+		//If encrypted == false don't decrypt, if value is nil don't decrypt otherwise decrypt
+		if encrypted != "false" && object.Field(i).Bytes() != nil {
 			decryptedStr, err = e.getPlainText(object.Field(i).Bytes(), aesGCM)
 			if err != nil {
 				return nil, fmt.Errorf("failed to get text out of encrypted value, the following error occured: %s", err)
